@@ -57,3 +57,19 @@ background-color: var(--theme-first-color);
   height: 200px;
   background-color: var(--theme-second-color);
 }
+
+.fith-color{
+    background: #c585b3;
+}
+
+.garden-wrapper{
+
+}
+
+.sky-wrapper{
+    margin: 0;
+    background-image: url(../img/skybackground.png);
+    height: 340px;
+    object-fit: fill;
+}
+
