@@ -1,57 +1,61 @@
-/*Theme colors*/
+:root {
+	/* Default theme colors */
+	--theme-first-color: #93e4c1;
+	--theme-second-color: #3baea0;
+	--theme-third-color: #118a7e;
+	--theme-fourth-color: #1f6f78;
+
+	/* Dark theme colors */
+	--dark-first-color: #27296d;
+	--dark-second-color: #5e63b6;
+	--dark-third-color: #a393eb;
+	--dark-fourth-color: #f5c7f7;
+
+	/* Flower theme colors */
+	--flower-first-color: #f92a82;
+	--flower-second-color: #fde549;
+	--flower-third-color: #3d2eaf;
+	--flower-fourth-color: #ff7433;
+	--flower-fifth-color: #c585b3;
+
+	/* Active palette (currently set to flower colors) */
+	--first-color: var(--flower-first-color);
+	--second-color: var(--flower-second-color);
+	--third-color: var(--flower-third-color);
+	--fourth-color: var(--flower-fourth-color);
+	--fifth-color: var(--flower-fifth-color);
+}
+*{
+  margin: 0px;
+  padding: 0px;
+}
 body{
-    margin: 0;
-    padding: 0;
+background-color: var(--theme-first-color);  
 }
 
-.first-color { 
-	background: #93e4c1; 
-}
-	
-.second-color { 
-	background: #3baea0; 
+.first-color {
+	background: var(--first-color);
 }
 
-.third-color { 
-	background: #118a7e; 
+.second-color {
+	background: var(--second-color);
 }
 
-.fourth-color { 
-	background: #1f6f78; 
+.third-color {
+	background: var(--third-color);
 }
 
-/*Darker Theme colors*/
-.first-color { 
-	background: #27296d; 
-}
-	
-.second-color { 
-	background: #5e63b6; 
+.fourth-color {
+	background: var(--fourth-color);
 }
 
-.third-color { 
-	background: #a393eb; 
+.fifth-color {
+	background: var(--fifth-color);
 }
-
-.fourth-color { 
-	background: #f5c7f7; 
-}
-
-/*Flower colors*/
-.first-color{
-    background: #f92a82;
-}
-
-.second-color{
-    background: #fde549;
-}
-
-.third-color{
-    background: #3d2eaf;
-}
-
-.fourth-color{
-    background: #ff7433;
+#garden{
+  width: 100%;
+  height: 200px;
+  background-color: var(--theme-second-color);
 }
 
 .fith-color{

@@ -3,23 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="js/firebase.js"></script>
-    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/index.js"></script>
     <link rel="stylesheet" href="./css/styles.css" />
     <link rel="stylesheet" href="./css/formstyling.css" />
     <title>Document</title>
   </head>
   <body>
-
-    <div class="sky-wrapper">
-      <h1>SKY</h1>
-          <header>
-      <nav>
-        <a href="">Messageboard</a>
-        <a href="">About</a>
-        <a href="">Contact</a>
-      </nav>
-    </header>
+    <div id="header-root"></div>
     <form action="">
       <input type="text" name="title" id="title" placeholder="title"/>
       <input type="text" name="message" id="message" />
@@ -42,7 +32,7 @@
     </div>
 
 <footer>
-    <div class="footer">
+    <div class="footer" id="dirt">
         <a href="https://www.facebook.com"><img src="/img/facebook.png" alt="Facebook"></a>
         <a href="https://www.instagram.com"><img src="/img/instagram.png" alt="Instagram"></a>
         <a href="https://www.linkedin.com"><img src="/img/linkedin.png" alt="LinkedIn"></a>
