@@ -52,8 +52,7 @@ export const postMessage = async (message, name, title) => {
   return { id: newID.name, newMessage }
 }
 
-export const deleteMessagebyId = async (id) => {
-
+export const deleteMessagebyId = async id => {
   const singleMessageRef = ref(db, `${id}/messages`)
   try {
     await remove(singleMessageRef)

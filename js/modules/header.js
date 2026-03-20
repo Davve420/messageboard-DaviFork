@@ -1,4 +1,4 @@
-import { createFlowerForm } from "./messageForm.js"
+import { createFlowerForm } from './messageForm.js'
 
 const isInSitesFolder = () =>
   window.location.pathname.toLowerCase().includes('/sites/')
@@ -17,7 +17,7 @@ const getDefaultLinks = () => {
     { label: 'Messageboard', href: './index.html' },
     { label: 'About', href: './sites/about.html' },
     { label: 'Contact', href: './sites/contact.html' },
-    { label: 'Plant a flower', href: '#' }
+    { label: 'Plant flower', href: '#' }
   ]
 }
 
@@ -38,10 +38,10 @@ export const renderHeader = links => {
   navLinks.forEach(({ label, href }) => {
     const anchor = document.createElement('a')
 
-    if (label === "Plant a flower") {
-      anchor.addEventListener("click", (e) => {
-        e.preventDefault();
-        createFlowerForm();
+    if (label === 'Plant flower') {
+      anchor.addEventListener('click', e => {
+        e.preventDefault()
+        createFlowerForm()
       })
     }
 
@@ -50,7 +50,17 @@ export const renderHeader = links => {
     background.src = imagePath
     p.textContent = label
     background.classList.add('cloud')
-    anchor.href = href
+
+    if (label === 'Plant flower') {
+      anchor.href = '#'
+      anchor.addEventListener('click', event => {
+        event.preventDefault()
+        openPlantFlowerPopup()
+      })
+    } else {
+      anchor.href = href
+    }
+
     anchor.append(background)
     anchor.append(p)
 
