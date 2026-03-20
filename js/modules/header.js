@@ -85,7 +85,7 @@ function openPlantFlowerPopup () {
     submitBtn.disabled = true
     submitBtn.textContent = 'Planting...'
     try {
-      await postMessage({ name, message })
+      postMessage({ name, message })
       renderFlower(imageSrc, { name, message })
     } catch (err) {
       console.error('Could not plant flower', err)

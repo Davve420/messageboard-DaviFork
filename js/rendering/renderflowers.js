@@ -76,16 +76,36 @@ function openFlowerPopup (imageSrc, data) {
 
   if (data) {
     if (data.name) {
-      const name = document.createElement('h3')
+      const name = document.createElement('h5')
       name.className = 'flower-popup-name'
       name.textContent = data.name
       box.append(name)
+    }
+    if (data.title) {
+      const message = document.createElement('h3')
+      message.className = 'flower-popup-message'
+      message.textContent = data.title
+      box.append(message)
     }
     if (data.message) {
       const message = document.createElement('p')
       message.className = 'flower-popup-message'
       message.textContent = data.message
       box.append(message)
+    }
+    if (data.answer) {
+      const answer = document.createElement('p')
+      answer.className = 'flower-popup-message'
+      const answerText =
+        typeof data.answer === 'string'
+          ? data.answer
+          : data.answer.message ?? JSON.stringify(data.answer)
+      const answerName =
+        typeof data.answer === 'string'
+          ? data.answer
+          : data.answer.name ?? JSON.stringify(data.answer)
+      answer.textContent = `Answer: ${answerText} From: ${answerName}`
+      box.append(answer)
     }
   }
 
