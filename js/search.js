@@ -16,6 +16,13 @@ function clearRenderedFlowers (garden) {
   garden.querySelectorAll('.garden-flower').forEach(flower => flower.remove())
 }
 
+function clearSearchMessage (garden) {
+  const existingMessage = garden.querySelector('.notFound')
+  if (existingMessage) {
+    existingMessage.remove()
+  }
+}
+
 async function renderSearchResults (data) {
   const garden = getGarden()
 
@@ -24,6 +31,7 @@ async function renderSearchResults (data) {
   }
 
   clearRenderedFlowers(garden)
+  clearSearchMessage(garden)
 
   const flowers = renderFlowers(data)
   flowers.forEach(flower => {
@@ -75,6 +83,14 @@ export const searchUser = async () => {
   searchBtn.type = 'submit'
   searchBtn.textContent = 'Search'
 
+  const closeBtn = document.createElement('button')
+  closeBtn.type = 'button'
+  closeBtn.className = 'search-close-btn'
+  closeBtn.setAttribute('aria-label', 'Close search')
+  closeBtn.textContent = '✕'
+  closeBtn.addEventListener('click', () => resetSearchFilter())
+
+  form.appendChild(closeBtn)
   form.appendChild(input)
   form.appendChild(searchBtn)
   searchMount.appendChild(form)
@@ -93,12 +109,19 @@ export const searchUser = async () => {
 
     for (const key in all) {
       const users = all[key]
-      if (users.name.toLowerCase().includes(search)) {
+      if (users.name.toLowerCase() === search) {
         filteredUsers[key] = users
       }
     }
 
     await renderSearchResults(filteredUsers)
+
+    if (Object.keys(filteredUsers).length === 0) {
+      const notAUser = document.createElement('p')
+      notAUser.classList.add('notFound')
+      notAUser.innerText = 'That user does not exist'
+      garden.appendChild(notAUser)
+    }
 
     form.remove()
   })
