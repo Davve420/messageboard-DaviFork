@@ -1,4 +1,8 @@
-import { postReply } from '../firebase/firebase.js'
+import {
+  postReply,
+  deleteMessagebyId,
+  isUserAdmin
+} from '../firebase/firebase.js'
 import { censorBadWords } from '../modules/censor.js'
 import { getUsername } from '../modules/username.js'
 
@@ -43,6 +47,15 @@ function getFlowerImagesForCurrentTheme () {
 
 function getDefaultFlowerImage () {
   return getFlowerImagesForCurrentTheme()[0]
+}
+
+function getFlowerImageForSeed (images, seedValue) {
+  if (!Array.isArray(images) || images.length === 0) {
+    return getDefaultFlowerImage()
+  }
+
+  const seed = hashString(String(seedValue || 'flower-default'))
+  return images[seed % images.length]
 }
 
 function extractFlowerVariantNumber (src) {
@@ -527,6 +540,91 @@ function buildReplyForm ({ postId, data, onReplySaved }) {
   return form
 }
 
+function normalizeUserName (value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+}
+
+function canDeleteAsOwner (data, currentUsername) {
+  if (!data) {
+    return false
+  }
+
+  return normalizeUserName(data.name) === normalizeUserName(currentUsername)
+}
+
+function appendDeleteButton ({ box, overlay, postId, data }) {
+  const username = getUsername().trim()
+  if (!postId || !username) {
+    return
+  }
+
+  let deleteButton = null
+  let status = null
+  let adminLabel = null
+
+  const mountDeleteControls = ({ fromAdmin = false } = {}) => {
+    if (deleteButton) {
+      return
+    }
+
+    if (fromAdmin) {
+      adminLabel = document.createElement('p')
+      adminLabel.className = 'flower-popup-admin-label'
+      adminLabel.textContent = 'Admin access'
+    }
+
+    deleteButton = document.createElement('button')
+    deleteButton.type = 'button'
+    deleteButton.className = 'flower-popup-delete-btn'
+    deleteButton.textContent = 'Delete message'
+
+    status = document.createElement('p')
+    status.className = 'flower-popup-delete-status'
+    status.hidden = true
+
+    deleteButton.addEventListener('click', async () => {
+      const shouldDelete = window.confirm(
+        'Delete this message and all replies?'
+      )
+      if (!shouldDelete) {
+        return
+      }
+
+      deleteButton.disabled = true
+      status.hidden = false
+      status.textContent = 'Deleting...'
+
+      try {
+        await deleteMessagebyId(postId)
+        overlay.remove()
+      } catch {
+        status.textContent = 'Could not delete message.'
+        deleteButton.disabled = false
+      }
+    })
+
+    if (adminLabel) {
+      box.append(adminLabel)
+    }
+    box.append(deleteButton, status)
+  }
+
+  if (canDeleteAsOwner(data, username)) {
+    mountDeleteControls()
+    return
+  }
+
+  isUserAdmin(username)
+    .then(admin => {
+      if (admin) {
+        mountDeleteControls({ fromAdmin: true })
+      }
+    })
+    .catch(() => {})
+}
+
 export function renderFlower (
   imageSrc = getDefaultFlowerImage(),
   data = null,
@@ -667,11 +765,20 @@ function openFlowerPopup (imageSrc, data, postId) {
     }
   }
 
+  appendDeleteButton({ box, overlay, postId, data })
+
   overlay.append(box)
   document.body.append(overlay)
 }
 
 export function renderFlowers (data = null) {
+  const garden =
+    document.getElementById('garden') ??
+    document.querySelector('.garden-wrapper')
+  if (garden) {
+    garden.querySelectorAll('.garden-flower').forEach(flower => flower.remove())
+  }
+
   const renderedFlowers = []
   const flowerImages = getFlowerImagesForCurrentTheme()
   const entries = data
@@ -681,8 +788,7 @@ export function renderFlowers (data = null) {
         .map((entry, index) => [`placeholder-${index}`, entry])
 
   entries.forEach(([entryKey, entry]) => {
-    const randomImage =
-      flowerImages[Math.floor(Math.random() * flowerImages.length)]
+    const randomImage = getFlowerImageForSeed(flowerImages, entryKey)
     const flower = renderFlower(
       randomImage,
       entry,

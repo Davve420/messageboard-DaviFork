@@ -481,6 +481,42 @@ html.dark-mode .info-card p {
 	color: #5d3e22;
 }
 
+.flower-popup-delete-btn {
+	margin-top: 4px;
+	padding: 7px 12px;
+	border: 2px solid #6a1f17;
+	border-radius: 8px;
+	background: #ffdcd7;
+	color: #5b1712;
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: 0 2px 0 #6a1f17;
+}
+
+.flower-popup-delete-btn:active {
+	transform: translateY(1px);
+	box-shadow: 0 1px 0 #6a1f17;
+}
+
+.flower-popup-delete-status {
+	margin: 0;
+	font-size: 0.82rem;
+	color: #6a1f17;
+}
+
+.flower-popup-admin-label {
+	margin: 0;
+	padding: 4px 8px;
+	border: 1px solid #4e341f;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #4e341f;
+	background: rgba(255, 243, 204, 0.85);
+}
+
 .flower-popup-close {
 	position: absolute;
 	top: 10px;
@@ -572,6 +608,27 @@ html.dark-mode .flower-popup-reply-actions button:active {
 
 html.dark-mode .flower-popup-reply-status {
 	color: #e5d6f6;
+}
+
+html.dark-mode .flower-popup-delete-btn {
+	background: #4b1f24;
+	color: #ffd9d6;
+	border-color: #ffb4b0;
+	box-shadow: 0 2px 0 #ffb4b0;
+}
+
+html.dark-mode .flower-popup-delete-btn:active {
+	box-shadow: 0 1px 0 #ffb4b0;
+}
+
+html.dark-mode .flower-popup-delete-status {
+	color: #ffc9c6;
+}
+
+html.dark-mode .flower-popup-admin-label {
+	color: #f2e9ff;
+	border-color: #dfcdf3;
+	background: rgba(47, 39, 64, 0.9);
 }
 
 html.dark-mode .flower-unread-badge {

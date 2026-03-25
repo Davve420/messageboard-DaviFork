@@ -2,7 +2,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.10.0/fireba
 import {
   getDatabase,
   ref,
-  remove
+  onValue
 } from 'https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js'
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -30,6 +30,17 @@ export const getAll = async () => {
   const messages = await response.json()
   console.log(messages)
   return messages
+}
+
+export const subscribeToMessages = onData => {
+  if (typeof onData !== 'function') {
+    return () => {}
+  }
+
+  const messagesRef = ref(db, '/messages')
+  return onValue(messagesRef, snapshot => {
+    onData(snapshot.val() || {})
+  })
 }
 
 export const postMessage = async (message, name, title) => {
@@ -133,10 +144,37 @@ export const loginUser = async (username, password) => {
   return true
 }
 
+export const isUserAdmin = async username => {
+  const cleanUsername = String(username || '').trim()
+  if (!cleanUsername) {
+    return false
+  }
+
+  const response = await fetch(
+    `${usersUrl}/${encodeURIComponent(cleanUsername)}.json`
+  )
+  if (!response.ok) {
+    throw new Error(response.status)
+  }
+
+  const user = await response.json()
+  return Boolean(user?.admin)
+}
+
 export const deleteMessagebyId = async id => {
-  const singleMessageRef = ref(db, `${id}/messages`)
+  const cleanId = String(id || '').trim()
+  if (!cleanId) {
+    throw new Error('Missing message id')
+  }
+
   try {
-    await remove(singleMessageRef)
+    const response = await fetch(
+      `${messagesBaseUrl}/${encodeURIComponent(cleanId)}.json`,
+      { method: 'DELETE' }
+    )
+    if (!response.ok) {
+      throw new Error(response.status)
+    }
     console.log('message deleted')
   } catch (err) {
     console.error('message not deleted')
