@@ -358,3 +358,41 @@ export const updatePostLikes = async (postId, increment) => {
     throw error
   }
 }
+//like Message
+export const LikeMessage = async (id, likes) => {
+const url = 'https://messageboard-77286-default-rtdb.europe-west1.firebasedatabase.app/messages'
+  const options = {
+    method: 'PATCH',
+    body: JSON.stringify({ 
+      likes: likes + 1 
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+
+  }
+  const response = await fetch(`${url}/${id}.json`, options);
+  if (!response.ok) throw new Error(response.status);
+  const data = await response.json()
+  //console.log(data)
+}
+
+//Dislike Message
+export const disLikeMessage = async (id, dislikes) => {
+const url = 'https://messageboard-77286-default-rtdb.europe-west1.firebasedatabase.app/messages'
+
+const options = {
+    method: 'PATCH',
+    body: JSON.stringify({ 
+      dislikes: dislikes + 1
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+
+  }
+  const response = await fetch(`${url}/${id}.json`, options);
+  if (!response.ok) throw new Error(response.status);
+  const data = await response.json()
+  //console.log(data)
+}

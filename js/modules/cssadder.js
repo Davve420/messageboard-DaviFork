@@ -14,7 +14,8 @@ export function addStyling () {
     'rabbit.css',
     'cabin.css',
     'cabin-popup.css',
-    'search.css'
+    'search.css',
+     'like.css'
   ]
 
   const existingFont = document.head.querySelector(

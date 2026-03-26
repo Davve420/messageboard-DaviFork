@@ -109,7 +109,7 @@ export const searchUser = async () => {
 
     for (const key in all) {
       const users = all[key]
-      if (users.name.toLowerCase() === search) {
+      if ( users.name && users.name.toLowerCase() === search) {
         filteredUsers[key] = users
       }
     }
@@ -117,12 +117,8 @@ export const searchUser = async () => {
     await renderSearchResults(filteredUsers)
 
     if (Object.keys(filteredUsers).length === 0) {
-      const notAUser = document.createElement('p')
-      notAUser.classList.add('notFound')
-      notAUser.innerText = 'That user does not exist'
-      garden.appendChild(notAUser)
+      alert('That user does not exist')
     }
-
     form.remove()
   })
 }
